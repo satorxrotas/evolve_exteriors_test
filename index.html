@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Landing Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:     #eef2f5;
+  --amber:    #2a7fa8;
+  --amber-lt: #1a6080;
+  --cream:    #141825;
+  --stone:    #4a5068;
+  --border:   rgba(42,127,168,0.25);
+}
+
+html, body {
+  width: 100%; min-height: 100%;
+  background: var(--navy);
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--cream);
+  scroll-behavior: smooth;
+}
+
+#bg-canvas {
+  position: fixed; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 56px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  background: #2a7fa8;
+}
+.nav-brand {
+  font-weight: 700; font-size: 16px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #ffffff; line-height: 1.15;
+}
+.nav-brand span {
+  display: block; font-weight: 400; font-size: 12px;
+  letter-spacing: 0.3em; color: rgba(255,255,255,0.7); margin-top: 2px;
+}
+.nav-links {
+  display: flex; align-items: center; gap: 32px; list-style: none;
+}
+.nav-links a {
+  font-weight: 500; font-size: 14px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.75); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: #ffffff; }
+.nav-cta {
+  padding: 11px 26px;
+  border: 1px solid rgba(255,255,255,0.6); color: #ffffff;
+  font-weight: 600; font-size: 14px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  text-decoration: none; transition: background 0.2s, color 0.2s;
+}
+.nav-cta:hover { background: #ffffff; color: #2a7fa8; }
+
+/* ── MAIN LAYOUT ── */
+.page {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto;
+  padding: 64px 40px 100px;
+}
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  margin-bottom: 64px;
+  opacity: 0; transform: translateY(16px);
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+.hero-eyebrow {
+  font-weight: 500; font-size: 13px;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 16px;
+}
+.hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700; font-size: clamp(48px, 7vw, 80px);
+  color: var(--cream); line-height: 1.05;
+  margin-bottom: 16px;
+}
+.hero-sub {
+  font-weight: 500; font-size: 16px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--stone);
+}
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  width: 200px; margin: 28px auto 0;
+  opacity: 0;
+  animation: fadeIn 1s ease 1s forwards;
+}
+
+/* ── UPDATES FEED ── */
+.section-label {
+  font-weight: 600; font-size: 12px;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 24px;
+}
+.updates-list {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--border);
+  background: rgba(238,242,245,0.75);
+  backdrop-filter: blur(8px);
+  margin-bottom: 60px;
+}
+.update-item {
+  display: grid; grid-template-columns: 80px 1fr;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.update-item:last-child { border-bottom: none; }
+.update-item:hover { background: rgba(42,127,168,0.07); }
+.update-date {
+  padding: 22px 12px 22px 16px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700; font-size: 18px;
+  color: var(--amber); line-height: 1;
+  border-right: 1px solid var(--border);
+  display: flex; align-items: flex-start; padding-top: 24px;
+  white-space: nowrap; overflow: visible;
+}
+.update-body {
+  padding: 22px 20px;
+  font-weight: 500; font-size: 17px;
+  line-height: 1.7; color: var(--cream);
+}
+
+@media (max-width: 480px) {
+  .update-item {
+    grid-template-columns: 70px 1fr;
+  }
+  .update-date {
+    font-size: 16px;
+    padding: 18px 10px 18px 14px;
+  }
+  .update-body {
+    padding: 18px 16px;
+    font-size: 15px;
+  }
+}
+
+/* ── SECTION GRID ── */
+.sections-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 60px;
+}
+.info-block {
+  background: var(--navy);
+  padding: 36px 32px;
+  position: relative;
+  transition: background 0.25s;
+}
+.info-block::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px; background: var(--amber);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.info-block:hover { background: #d8e4ec; }
+.info-block:hover::after { transform: scaleX(1); }
+.info-block-title {
+  font-weight: 700; font-size: 14px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream); margin-bottom: 14px;
+}
+.info-block p {
+  font-weight: 500; font-size: 17px;
+  line-height: 1.75; color: var(--cream);
+}
+.info-block p + p { margin-top: 10px; }
+.info-block ul {
+  list-style: none; margin-top: 4px;
+}
+.info-block ul li {
+  font-weight: 500; font-size: 17px;
+  line-height: 1.75; color: var(--cream);
+  padding-left: 18px; position: relative;
+}
+.info-block ul li::before {
+  content: '—'; position: absolute; left: 0;
+  color: var(--amber); font-size: 13px; top: 3px;
+}
+
+/* ── SCHEDULE TABLE ── */
+.schedule-wrap {
+  margin-bottom: 60px;
+}
+.schedule-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid var(--border);
+  background: rgba(238,242,245,0.75);
+  backdrop-filter: blur(8px);
+}
+.schedule-table th {
+  font-weight: 700; font-size: 13px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--amber); padding: 16px 24px;
+  text-align: left; border-bottom: 1px solid var(--border);
+}
+.schedule-table td {
+  font-weight: 500; font-size: 17px;
+  color: var(--cream); padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.schedule-table tr:last-child td { border-bottom: none; }
+.schedule-table tr:hover td { background: rgba(42,127,168,0.07); color: var(--cream); }
+.schedule-table td:first-child {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700; font-size: 20px; color: var(--amber);
+}
+
+/* ── CONTACT STRIP ── */
+.contact-strip {
+  border: 1px solid var(--border);
+  background: rgba(238,242,245,0.75);
+  backdrop-filter: blur(8px);
+  padding: 40px 48px;
+  text-align: center;
+  position: relative;
+  transition: background 0.25s;
+}
+.contact-strip::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px; background: var(--amber);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.contact-strip:hover { background: #d8e4ec; }
+.contact-strip:hover::after { transform: scaleX(1); }
+.contact-strip.is-highlighted { background: #d8e4ec; }
+.contact-strip.is-highlighted::after { transform: scaleX(1); }
+.contact-strip-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700; font-size: 42px;
+  color: var(--cream); margin-bottom: 10px;
+}
+.contact-strip-sub {
+  font-weight: 500; font-size: 17px;
+  letter-spacing: 0.05em; color: var(--cream);
+  margin-bottom: 28px;
+}
+.contact-strip-divider {
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  margin: 0 auto 28px;
+}
+.contact-details {
+  display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+}
+.contact-detail {
+  text-align: center;
+}
+.contact-detail-label {
+  font-weight: 500; font-size: 12px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 6px;
+}
+.contact-detail-value {
+  font-weight: 700; font-size: 20px;
+  letter-spacing: 0.04em; color: var(--amber-lt);
+}
+.contact-detail-value a {
+  color: var(--amber-lt); text-decoration: none;
+  border-bottom: 1px solid rgba(168,212,232,0.3);
+  padding-bottom: 2px; transition: color 0.2s, border-color 0.2s;
+}
+.contact-detail-value a:hover { color: var(--cream); border-color: var(--cream); }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 56px 24px;
+  border-top: 1px solid var(--border);
+  background: rgba(238,242,245,0.75);
+  backdrop-filter: blur(8px);
+}
+.footer-copy {
+  font-weight: 300; font-size: 10px;
+  letter-spacing: 0.14em; color: var(--stone);
+}
+.footer-contact {
+  font-weight: 400; font-size: 11px;
+  letter-spacing: 0.16em; color: var(--stone);
+}
+.footer-contact a { color: var(--amber-lt); text-decoration: none; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.fade-up {
+  opacity: 0; transform: translateY(16px);
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 720px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .nav-cta { font-size: 13px; padding: 12px 24px; letter-spacing: 0.12em; }
+  .page { padding: 40px 20px 80px; }
+  .sections-grid { grid-template-columns: 1fr; }
+  .update-item { grid-template-columns: 72px 1fr; }
+  .update-date { font-size: 16px; padding: 18px 10px 18px 14px; }
+  .update-body { padding: 18px 16px; font-size: 15px; }
+  .schedule-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .schedule-table { min-width: 420px; }
+  .contact-strip { padding: 32px 24px; }
+  footer { padding: 16px 24px 20px; flex-direction: column; gap: 8px; text-align: center; }
+}
+.cf-email-fix::before { content: var(--e); }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <a href="#questions" class="nav-cta">Questions?</a>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Resident Portal</div>
+    <h1 class="hero-title">Welcome, Residents</h1>
+    <p class="hero-sub">Insurance Claim Approved Roof Replacement</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- UPDATES -->
+  <div class="section-label fade-up" style="animation-delay:0.4s">Project Updates</div>
+  <div class="updates-list fade-up" style="animation-delay:0.5s">
+
+    <div class="update-item">
+      <div class="update-date">09/25</div>
+      <div class="update-body">Due to weather expected tomorrow, Thursday 09/22, work will not take place. Crews will return Friday 09/23, weather permitting. This shouldn't impact the overall schedule — we expect to move onto the next buildings Monday 09/26 as planned.</div>
+    </div>
+
+    <div class="update-item">
+      <div class="update-date">09/19</div>
+      <div class="update-body">Today we will be beginning on buildings labeled 4, 5, and 6. Questions? Contact your management company or Stronghouse at (123) 456-7890 or <a href="mailto:info@stronghousebrands.com" style="--e:'info@stronghousebrands.com'" class="cf-email-fix"></a>.</div>
+    </div>
+
+    <div class="update-item">
+      <div class="update-date">09/16</div>
+      <div class="update-body">We are finishing up the first three buildings. Thanks everyone for your cooperation.</div>
+    </div>
+
+    <div class="update-item">
+      <div class="update-date">09/15</div>
+      <div class="update-body">Today we will be delivering and lifting materials onto buildings numbered 4, 5, and 6.</div>
+    </div>
+
+    <div class="update-item">
+      <div class="update-date">09/12</div>
+      <div class="update-body">We are officially beginning the project today! Starting on buildings labeled 1, 2, and 3. Questions? Contact Stronghouse at (123) 456-7890 or <a href="mailto:info@stronghousebrands.com" style="--e:'info@stronghousebrands.com'" class="cf-email-fix"></a>.</div>
+    </div>
+
+    <div class="update-item">
+      <div class="update-date">09/10</div>
+      <div class="update-body">Please refer to the building map for reference on which buildings will have materials delivered and boomed each week. Schedule is weather permitting.</div>
+    </div>
+
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="section-label fade-up" style="animation-delay:0.6s">Project Schedule</div>
+  <div class="schedule-wrap fade-up" style="animation-delay:0.7s">
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Week</th>
+          <th>Buildings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>09/10</td><td>Week 1</td><td>Buildings 1, 2 and 3</td></tr>
+        <tr><td>09/17</td><td>Week 2</td><td>Buildings 4, 5 and 6</td></tr>
+        <tr><td>09/24</td><td>Week 3</td><td>Buildings 7, 8 and 9</td></tr>
+        <tr><td>10/01</td><td>Week 4</td><td>Buildings 10, 11 and 12</td></tr>
+        <tr><td>10/08</td><td>Week 5</td><td>Buildings 13, 14 and 15</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TIMING + WHAT TO EXPECT -->
+  <div class="section-label fade-up" style="animation-delay:0.8s">Project Information</div>
+  <div class="sections-grid fade-up" style="animation-delay:0.9s">
+
+    <div class="info-block">
+      <div class="info-block-title">Timing</div>
+      <p>Stronghouse will be assisting with insurance claim approved roof replacements throughout the community — all buildings.</p>
+      <p>We will have 3 crews onsite and estimate each building at approx. 5 days to complete. The entire project should wrap up in about 5 weeks, weather permitting.</p>
+      <p>Working hours: Mon.–Sat., 7:00am–dusk.</p>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-title">Vehicles</div>
+      <p style="color:var(--amber);font-weight:700;">Very Important:</p>
+      <p>Have your vehicles off the driveway and moved away from your building by 7:00 AM on the day(s) your building is scheduled to prevent damage.</p>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-title">Suggestions for a Problem-Free Roof</div>
+      <ul>
+        <li>Remove patio furniture, grills, and property from decks/patios as well as fragile wall items — contractor is NOT liable for such damages.</li>
+        <li>Remove all pet waste before project begins.</li>
+        <li>Close window coverings during the day while work is underway.</li>
+        <li>Notify us of any special or delicate plants/shrubs so we can protect them.</li>
+      </ul>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-title">Clean Up</div>
+      <ul>
+        <li>Site cleaned during the day and at end of each day.</li>
+        <li>Lawn swept with magnetic "nail-finder" to reduce leftover nails.</li>
+        <li>Tools and materials kept neatly organized and out of the way.</li>
+      </ul>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-title">Conditions Beyond Our Control</div>
+      <ul>
+        <li>Existing structural issues such as loose plaster, sagging rafters, nail-pops, or previously rotted materials.</li>
+        <li>Scheduling delays due to weather or emergencies. We will do our best to minimize any disruption.</li>
+      </ul>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-title">Landscaping</div>
+      <p>If there are any special or delicate plants or shrubs, please notify us before the job starts and we will protect them as best as possible.</p>
+    </div>
+
+  </div>
+
+  <!-- CONTACT -->
+  <div id="questions" class="contact-strip fade-up" style="animation-delay:1s">
+    <div class="contact-strip-title">Questions?</div>
+    <p class="contact-strip-sub">Contact Stronghouse directly — please leave your address, name, email, and phone number.</p>
+    <div class="contact-strip-divider"></div>
+    <div class="contact-details">
+      <div class="contact-detail">
+        <div class="contact-detail-label">Director, Multifamily Ops</div>
+        <div class="contact-detail-value">Josie Flicek</div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-label">Phone</div>
+        <div class="contact-detail-value"><a href="tel:1234567890">(123) 456-7890</a></div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-label">Email</div>
+        <div class="contact-detail-value"><a href="mailto:info@stronghousebrands.com" style="--e:'info@stronghousebrands.com'" class="cf-email-fix"></a></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── ANIMATED BACKGROUND (same as Evolve Exteriors) ──
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const BASE = '#eef2f5';
+
+const blobs = [
+  { r: 0.62, rx: 0.72, ry: 0.52, color: [180, 210, 230],
+    ax: 0.38, px: 0.00, fx: 0.000238,
+    ay: 0.32, py: 1.20, fy: 0.000163 },
+  { r: 0.50, rx: 0.60, ry: 0.48, color: [190, 220, 238],
+    ax: 0.28, px: 0.80, fx: 0.000213,
+    ay: 0.36, py: 2.50, fy: 0.000138 },
+  { r: 0.44, rx: 0.52, ry: 0.40, color: [170, 205, 225],
+    ax: 0.30, px: 1.60, fx: 0.000275,
+    ay: 0.28, py: 0.40, fy: 0.000200 },
+  { r: 0.38, rx: 0.46, ry: 0.36, color: [200, 225, 240],
+    ax: 0.24, px: 3.10, fx: 0.000188,
+    ay: 0.30, py: 1.80, fy: 0.000250 },
+  { r: 0.32, rx: 0.40, ry: 0.30, color: [160, 200, 222],
+    ax: 0.20, px: 2.20, fx: 0.000225,
+    ay: 0.22, py: 0.90, fy: 0.000175 },
+  { r: 0.28, rx: 0.34, ry: 0.26, color: [210, 228, 242],
+    ax: 0.18, px: 4.00, fx: 0.000263,
+    ay: 0.18, py: 3.30, fy: 0.000213 },
+];
+
+const homes = [
+  { x: 0.50, y: 0.08 },
+  { x: 0.10, y: 0.82 },
+  { x: 0.88, y: 0.75 },
+  { x: 0.72, y: 0.14 },
+  { x: 0.22, y: 0.32 },
+  { x: 0.60, y: 0.55 },
+];
+
+function drawBlob(cx, cy, radiusX, radiusY, [r, g, b], alpha) {
+  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(radiusX, radiusY));
+  grd.addColorStop(0,   `rgba(${r},${g},${b},${alpha})`);
+  grd.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * 0.45})`);
+  grd.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(radiusX / Math.max(radiusX, radiusY));
+  ctx.translate(-cx, -cy);
+  ctx.beginPath();
+  ctx.arc(cx, cy, Math.max(radiusX, radiusY), 0, Math.PI * 2);
+  ctx.fillStyle = grd;
+  ctx.fill();
+  ctx.restore();
+}
+
+function tick(now) {
+  ctx.fillStyle = BASE;
+  ctx.fillRect(0, 0, W, H);
+
+  blobs.forEach((b, i) => {
+    const home = homes[i];
+    const cx = (home.x + Math.sin(now * b.fx + b.px) * b.ax) * W;
+    const cy = (home.y + Math.sin(now * b.fy + b.py) * b.ay) * H;
+    const breathe = 1 + 0.12 * Math.sin(now * 0.0001125 + i * 1.3);
+    const rx = b.rx * W * b.r * breathe;
+    const ry = b.ry * H * b.r * breathe;
+    drawBlob(cx, cy, rx, ry, b.color, 0.72);
+  });
+
+  requestAnimationFrame(tick);
+}
+
+requestAnimationFrame(tick);
+
+// ── STAGGERED FADE-UP OBSERVER ──
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.animationPlayState = 'running';
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => {
+  el.style.animationPlayState = 'paused';
+  obs.observe(el);
+});
+
+// ── QUESTIONS BUTTON: activate hover state on click ──
+const questionsBtn = document.querySelector('a[href="#questions"]');
+const questionsSection = document
